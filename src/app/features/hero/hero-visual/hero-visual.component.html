@@ -1,0 +1,22 @@
+<div class="relative aspect-square rounded-lg border border-line bg-surface overflow-hidden">
+  <img
+    *ngIf="!imageFailed"
+    [src]="image"
+    [alt]="alt"
+    class="w-full h-full object-cover"
+    (error)="imageFailed = true"
+  />
+
+  <div
+    *ngIf="imageFailed"
+    class="absolute inset-0 flex flex-col items-center justify-center gap-3 text-center px-6"
+  >
+    <div class="w-10 h-10 rounded border border-line flex items-center justify-center text-accent font-mono text-xs">
+      &lt;/&gt;
+    </div>
+    <p class="font-mono text-xs text-muted">Visuel à ajouter</p>
+    <p class="font-mono text-[10px] text-muted/70 break-all">{{ image }}</p>
+  </div>
+
+  <div class="absolute inset-0 pointer-events-none ring-1 ring-inset ring-white/5"></div>
+</div>

@@ -1,0 +1,36 @@
+<div class="max-w-content mx-auto px-5 md:px-8 w-full grid grid-cols-1 md:grid-cols-[1.1fr_0.9fr] gap-5 md:gap-12 items-center max-h-[calc(100vh-9rem)] md:max-h-none overflow-y-auto md:overflow-visible">
+
+  <div class="aspect-[16/10] md:aspect-[4/3] rounded-lg overflow-hidden bg-surface border border-line">
+    <img
+      [src]="project.image"
+      [alt]="'Aperçu du projet ' + project.title"
+      class="w-full h-full object-cover"
+      loading="lazy"
+    />
+  </div>
+
+  <div>
+    <p class="font-mono text-[11px] md:text-xs text-muted mb-2 md:mb-3">{{ project.index }} — {{ project.type }}</p>
+    <h3 class="font-display text-xl md:text-3xl font-semibold text-ink mb-2 md:mb-4">{{ project.title }}</h3>
+    <p class="text-sm md:text-base text-muted leading-relaxed mb-3 md:mb-5">{{ project.description }}</p>
+
+    <div class="flex flex-wrap gap-2 mb-4 md:mb-7">
+      <span
+        *ngFor="let tech of project.technologies"
+        class="text-[11px] md:text-xs font-mono px-2 md:px-2.5 py-0.5 md:py-1 rounded border border-line bg-surface text-accent"
+      >{{ tech }}</span>
+    </div>
+
+    <a
+      *ngIf="project.url"
+      [href]="project.url"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="inline-flex items-center gap-2 text-sm font-medium text-ink hover:text-accent transition-colors"
+    >
+      Voir le projet
+      <span aria-hidden="true">→</span>
+    </a>
+  </div>
+
+</div>

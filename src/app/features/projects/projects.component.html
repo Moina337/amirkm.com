@@ -1,0 +1,70 @@
+<section id="projets" class="border-t border-line">
+
+  <!-- Section pilotée par le scroll vertical : le scroll fait défiler les
+       projets horizontalement, sur toutes les tailles d'écran. -->
+  <div #wrapper class="relative">
+    <div class="sticky top-0 h-screen overflow-hidden flex flex-col justify-center bg-bg">
+
+      <div class="max-w-content mx-auto px-5 md:px-8 w-full flex items-center justify-between mb-2">
+        <div>
+          <p class="font-mono text-[10px] md:text-xs tracking-[0.18em] uppercase text-accent mb-1 md:mb-2">Projets</p>
+          <h2 class="font-display text-lg md:text-2xl font-semibold text-ink">Ce que j'ai construit</h2>
+        </div>
+
+        <div class="flex items-center gap-3 md:gap-5">
+          <span class="font-mono text-xs md:text-sm text-muted">
+            {{ (activeIndex + 1) < 10 ? '0' + (activeIndex + 1) : (activeIndex + 1) }} / {{ projects.length < 10 ? '0' + projects.length : projects.length }}
+          </span>
+          <div class="flex items-center gap-2">
+            <button
+              type="button"
+              (click)="prev()"
+              [disabled]="activeIndex === 0"
+              class="w-8 h-8 md:w-9 md:h-9 flex items-center justify-center rounded-full border border-line text-ink hover:border-accent hover:text-accent transition-colors disabled:opacity-30 disabled:hover:border-line disabled:hover:text-ink"
+              aria-label="Projet précédent"
+            >
+              ←
+            </button>
+            <button
+              type="button"
+              (click)="next()"
+              [disabled]="activeIndex === projects.length - 1"
+              class="w-8 h-8 md:w-9 md:h-9 flex items-center justify-center rounded-full border border-line text-ink hover:border-accent hover:text-accent transition-colors disabled:opacity-30 disabled:hover:border-line disabled:hover:text-ink"
+              aria-label="Projet suivant"
+            >
+              →
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="overflow-hidden">
+        <div #track class="flex w-max will-change-transform">
+          <article
+            *ngFor="let project of projects"
+            class="w-screen flex-shrink-0 flex items-center"
+          >
+            <app-project-card [project]="project"></app-project-card>
+          </article>
+        </div>
+      </div>
+
+      <div class="max-w-content mx-auto px-5 md:px-8 w-full mt-4 md:mt-6 flex items-center gap-2">
+        <button
+          *ngFor="let project of projects; let i = index"
+          type="button"
+          (click)="goTo(i)"
+          class="h-1.5 rounded-full transition-all"
+          [class.w-8]="i === activeIndex"
+          [class.bg-accent]="i === activeIndex"
+          [class.w-1.5]="i !== activeIndex"
+          [class.bg-line]="i !== activeIndex"
+          [attr.aria-label]="'Aller au projet ' + project.title"
+          [attr.aria-current]="i === activeIndex"
+        ></button>
+      </div>
+
+    </div>
+  </div>
+
+</section>

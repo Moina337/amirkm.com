@@ -1,0 +1,33 @@
+<section id="experience" class="py-20 md:py-28 border-t border-line">
+  <div class="max-w-content mx-auto px-6 md:px-8">
+    <p class="font-mono text-xs tracking-[0.18em] uppercase text-accent mb-3">Expérience</p>
+    <h2 class="font-display text-2xl md:text-3xl font-semibold text-ink mb-14">
+      Mon expérience professionnelle
+    </h2>
+
+    <ol class="relative border-l border-line pl-8 md:pl-10 space-y-12 max-w-2xl" *ngIf="experience$ | async as experience">
+      <li *ngFor="let item of experience" class="relative">
+        <span class="absolute -left-[calc(2rem+5px)] md:-left-[calc(2.5rem+5px)] top-1 w-2.5 h-2.5 rounded-full bg-accent"></span>
+        <h3 class="font-display text-lg font-semibold text-ink">{{ item.title }}</h3>
+        <p class="mt-2 text-muted leading-relaxed">{{ item.description }}</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<section id="parcours-academique" class="py-20 md:py-28 border-t border-line">
+  <div class="max-w-content mx-auto px-6 md:px-8">
+    <p class="font-mono text-xs tracking-[0.18em] uppercase text-accent mb-3">Parcours académique</p>
+    <h2 class="font-display text-2xl md:text-3xl font-semibold text-ink mb-14">
+      Mon parcours académique
+    </h2>
+
+    <ol class="relative border-l border-line pl-8 md:pl-10 space-y-12 max-w-2xl" *ngIf="academicJourney$ | async as academicJourney">
+      <li *ngFor="let item of academicJourney" class="relative">
+        <span class="absolute -left-[calc(2rem+5px)] md:-left-[calc(2.5rem+5px)] top-1 w-2.5 h-2.5 rounded-full bg-accent"></span>
+        <h3 class="font-display text-lg font-semibold text-ink">{{ item.title }}</h3>
+        <p class="mt-2 text-muted leading-relaxed">{{ item.description }}</p>
+      </li>
+    </ol>
+  </div>
+</section>

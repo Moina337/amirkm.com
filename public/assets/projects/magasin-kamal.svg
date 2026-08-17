@@ -1,0 +1,8 @@
+<svg width="800" height="600" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="600" fill="#161B22"/>
+  <rect x="0.5" y="0.5" width="799" height="599" fill="none" stroke="#30363D"/>
+  <g font-family="monospace" fill="#8B949E">
+    <text x="400" y="285" font-size="16" text-anchor="middle">Aperçu à ajouter</text>
+    <text x="400" y="315" font-size="14" text-anchor="middle" fill="#2EA043">Magasin Kamal</text>
+  </g>
+</svg>
