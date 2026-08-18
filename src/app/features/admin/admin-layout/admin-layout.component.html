@@ -1,0 +1,16 @@
+<div class="min-h-screen flex bg-bg">
+  <aside class="w-56 border-r border-line p-6 flex flex-col">
+    <p class="font-display font-semibold text-ink mb-8">Admin<span class="text-accent">.</span></p>
+
+    <nav class="flex flex-col gap-1 flex-1">
+      <a *ngFor="let link of links" [routerLink]="link.path" routerLinkActive="text-accent bg-surface" class="px-3 py-2 rounded-md text-sm text-muted hover:text-ink transition-colors">{{ link.label }}</a>
+    </nav>
+
+    <button (click)="logout()" class="text-sm text-muted hover:text-accent text-left">Se déconnecter</button>
+    <a routerLink="/" class="text-xs text-muted hover:text-accent mt-3">← Retour au site</a>
+  </aside>
+
+  <main class="flex-1 p-8 overflow-y-auto">
+    <router-outlet></router-outlet>
+  </main>
+</div>

@@ -1,0 +1,46 @@
+<h1 class="font-display text-2xl font-semibold text-ink mb-6">Compétences</h1>
+
+<form (ngSubmit)="save()" class="border border-line rounded-lg p-5 bg-surface mb-8 grid grid-cols-4 gap-3 items-end">
+  <div>
+    <label class="block text-xs font-mono text-muted mb-1">Nom</label>
+    <input name="name" [(ngModel)]="form.name" required class="w-full px-3 py-2 rounded-md bg-bg border border-line text-ink text-sm" />
+  </div>
+  <div>
+    <label class="block text-xs font-mono text-muted mb-1">Catégorie</label>
+    <select name="category" [(ngModel)]="form.category" class="w-full px-3 py-2 rounded-md bg-bg border border-line text-ink text-sm">
+      <option value="Frontend">Frontend</option>
+      <option value="Backend">Backend</option>
+      <option value="Base de données">Base de données</option>
+      <option value="Outils">Outils</option>
+    </select>
+  </div>
+  <div>
+    <label class="block text-xs font-mono text-muted mb-1">Icône (slug)</label>
+    <input name="icon" [(ngModel)]="form.icon" class="w-full px-3 py-2 rounded-md bg-bg border border-line text-ink text-sm" />
+  </div>
+  <div class="flex gap-2">
+    <button type="submit" class="px-4 py-2 rounded-md bg-accent text-bg text-sm font-medium hover:bg-accent-hover">
+      {{ editingId ? 'Modifier' : 'Ajouter' }}
+    </button>
+    <button *ngIf="editingId" type="button" (click)="cancel()" class="px-4 py-2 rounded-md border border-line text-ink text-sm">Annuler</button>
+  </div>
+</form>
+
+<table class="w-full text-sm">
+  <thead>
+    <tr class="text-left text-muted border-b border-line">
+      <th class="py-2">Nom</th><th>Catégorie</th><th>Icône</th><th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let s of skills" class="border-b border-line/50">
+      <td class="py-2 text-ink">{{ s.name }}</td>
+      <td class="text-muted">{{ s.category }}</td>
+      <td class="text-muted font-mono">{{ s.icon }}</td>
+     <td class="text-right">
+  <button (click)="edit(s)" class="text-accent hover:underline mr-3">Modifier</button>
+  <button (click)="remove(s.id)" class="text-red-400 hover:underline">Supprimer</button>
+</td>
+    </tr>
+  </tbody>
+</table>
