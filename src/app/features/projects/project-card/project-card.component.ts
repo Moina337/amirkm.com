@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 import { Project } from '../../../core/models/project.model';
 
@@ -10,7 +11,7 @@ import { Project } from '../../../core/models/project.model';
 @Component({
   selector: 'app-project-card',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,RouterLink],
   templateUrl: './project-card.component.html',
 })
 export class ProjectCardComponent {

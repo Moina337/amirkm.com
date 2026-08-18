@@ -21,16 +21,9 @@
       >{{ tech }}</span>
     </div>
 
-    <a
-      *ngIf="project.url"
-      [href]="project.url"
-      target="_blank"
-      rel="noopener noreferrer"
-      class="inline-flex items-center gap-2 text-sm font-medium text-ink hover:text-accent transition-colors"
-    >
-      Voir le projet
-      <span aria-hidden="true">→</span>
-    </a>
+   <a [routerLink]="['/projets', project.slug]" class="inline-flex items-center gap-2 text-sm font-medium text-ink hover:text-accent transition-colors mr-4">
+  Voir le détail →
+</a>
   </div>
 
 </div>
