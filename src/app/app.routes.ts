@@ -6,6 +6,10 @@ import { AdminLayoutComponent } from './features/admin/admin-layout/admin-layout
 import { AdminSkillsComponent } from './features/admin/skills/admin-skills.component';
 import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
 import { authGuard } from './core/guards/auth.guard';
+import { ProjectListComponent } from './features/admin/projects/project-list/project-list.component';
+import { ProjectFormComponent } from './features/admin/projects/project-form/project-form.component';
+
+
 
 export const routes: Routes = [
   {
@@ -23,8 +27,12 @@ export const routes: Routes = [
     component: AdminLayoutComponent,
     canActivate: [authGuard],
     children: [
-      { path: '', redirectTo: 'projects', pathMatch: 'full' },
-      { path: 'skills', component: AdminSkillsComponent },
+     { path: '', redirectTo: 'projects', pathMatch: 'full' },
+     { path: 'projects', component: ProjectListComponent },
+{ path: 'projects/new', component: ProjectFormComponent },
+{ path: 'projects/:id/edit', component: ProjectFormComponent },
+{ path: 'skills', component: AdminSkillsComponent },
+
       // les autres (projects, journey, interests, social-links, profile) arrivent dans la partie 2
     ],
   },

@@ -1,0 +1,44 @@
+<div class="flex items-center justify-between mb-6">
+  <h1 class="font-display text-2xl font-semibold text-ink">Projets</h1>
+  <a
+    routerLink="/admin/projects/new"
+    class="px-4 py-2 rounded-md bg-accent text-bg text-sm font-medium hover:bg-accent-hover"
+  >
+    + Nouveau projet
+  </a>
+</div>
+
+<table class="w-full text-sm">
+  <thead>
+    <tr class="text-left text-muted border-b border-line">
+      <th class="py-2">Image</th><th>Titre</th><th>Slug</th><th>Statut</th><th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let p of projects" class="border-b border-line/50">
+      <td class="py-2">
+        <div class="w-16 aspect-video rounded overflow-hidden border border-line bg-surface">
+          <img *ngIf="p.image" [src]="p.image" [alt]="p.title" class="w-full h-full object-cover" />
+        </div>
+      </td>
+      <td class="text-ink">{{ p.title }}</td>
+      <td class="text-muted font-mono">{{ p.slug }}</td>
+      <td>
+        <button
+          (click)="toggleActive(p)"
+          class="px-2 py-1 rounded text-xs font-mono border"
+          [class.text-accent]="p.isActive"
+          [class.border-accent]="p.isActive"
+          [class.text-muted]="!p.isActive"
+          [class.border-line]="!p.isActive"
+        >
+          {{ p.isActive ? 'Actif' : 'Inactif' }}
+        </button>
+      </td>
+      <td class="text-right whitespace-nowrap">
+        <a [routerLink]="['/admin/projects', p.id, 'edit']" class="text-accent hover:underline mr-3">Modifier</a>
+        <button (click)="remove(p.id)" class="text-red-400 hover:underline">Supprimer</button>
+      </td>
+    </tr>
+  </tbody>
+</table>

@@ -9,24 +9,34 @@ import { Profile } from '../models/profile.model';
 import { supabase } from './supabase.client';
 import { ProjectImage } from '../models/project-image.model';
 import { SocialLink } from '../models/social-link.model';
+import { mapProjectFromDb } from './project.mapper';
 
 @Injectable({ providedIn: 'root' })
 export class PortfolioService {
-  getProjects(): Observable<Project[]> {
-    return from(
-      supabase.from('projects').select('*').order('sort_order')
-    ).pipe(map(({ data, error }) => {
-      if (error) throw error;
-      return data as Project[];
-    }));
-  }
-
-  getProjectBySlug(slug: string): Observable<Project> {
+getProjects(): Observable<Project[]> {
   return from(
-    supabase.from('projects').select('*').eq('slug', slug).single()
+    supabase
+      .from('projects')
+      .select('*, project_images(*)')
+      .eq('is_active', true)
+      .order('sort_order')
   ).pipe(map(({ data, error }) => {
     if (error) throw error;
-    return data as Project;
+    return (data ?? []).map(mapProjectFromDb);
+  }));
+}
+
+getProjectBySlug(slug: string): Observable<Project> {
+  return from(
+    supabase
+      .from('projects')
+      .select('*, project_images(*)')
+      .eq('slug', slug)
+      .eq('is_active', true)
+      .single()
+  ).pipe(map(({ data, error }) => {
+    if (error) throw error;
+    return mapProjectFromDb(data);
   }));
 }
 
