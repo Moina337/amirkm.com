@@ -10,6 +10,7 @@ import { supabase } from './supabase.client';
 import { ProjectImage } from '../models/project-image.model';
 import { SocialLink } from '../models/social-link.model';
 import { mapProjectFromDb } from './project.mapper';
+import { mapInterestFromDb } from './interest.mapper';
 
 @Injectable({ providedIn: 'root' })
 export class PortfolioService {
@@ -68,13 +69,13 @@ getProjectImages(projectId: number): Observable<ProjectImage[]> {
   }
 
   getInterests(): Observable<Interest[]> {
-    return from(
-      supabase.from('interests').select('*').order('sort_order')
-    ).pipe(map(({ data, error }) => {
-      if (error) throw error;
-      return data as Interest[];
-    }));
-  }
+  return from(
+    supabase.from('interests').select('*').eq('is_active', true).order('sort_order', { nullsFirst: false })
+  ).pipe(map(({ data, error }) => {
+    if (error) throw error;
+    return (data ?? []).map(mapInterestFromDb);
+  }));
+}
 
   getProfile(): Observable<Profile> {
     const profile$ = from(supabase.from('profile').select('*').single());
