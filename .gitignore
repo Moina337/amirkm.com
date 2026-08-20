@@ -37,8 +37,9 @@ yarn-error.log
 testem.log
 /typings
 
-# Environments & Sensitive Keys
-src/environments/environment.ts
+
+# Fichier local secret
+src/environments/environment.dev.ts
 
 # System files
 .DS_Store
