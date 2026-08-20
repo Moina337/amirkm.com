@@ -1,0 +1,79 @@
+<div class="flex items-center justify-between mb-6">
+  <h1 class="font-display text-2xl font-semibold text-ink">Réseaux sociaux</h1>
+  <button
+    *ngIf="editingId === null"
+    (click)="form = emptyForm()"
+    class="px-4 py-2 rounded-md bg-accent text-bg text-sm font-medium hover:bg-accent-hover"
+  >
+    + Nouveau
+  </button>
+</div>
+
+<form (ngSubmit)="save()" class="border border-line rounded-lg p-5 bg-surface mb-8 grid grid-cols-2 gap-4">
+  <h2 class="col-span-2 font-display text-lg font-semibold text-ink -mb-1">
+    {{ editingId ? 'Modifier' : 'Ajouter' }}
+  </h2>
+
+  <div>
+    <label class="block text-xs font-mono text-muted mb-1">Plateforme</label>
+    <select name="platform" [(ngModel)]="form.platform" class="w-full px-3 py-2 rounded-md bg-bg border border-line text-ink text-sm">
+      <option *ngFor="let p of platforms" [value]="p">{{ p }}</option>
+    </select>
+  </div>
+
+  <div>
+    <label class="block text-xs font-mono text-muted mb-1">Label affiché</label>
+    <input name="label" [(ngModel)]="form.label" required placeholder="GitHub, LinkedIn..." class="w-full px-3 py-2 rounded-md bg-bg border border-line text-ink text-sm" />
+  </div>
+
+  <div class="col-span-2">
+    <label class="block text-xs font-mono text-muted mb-1">Lien (URL ou mailto:...)</label>
+    <input name="href" [(ngModel)]="form.href" required placeholder="https://... ou mailto:... ou https://wa.me/..." class="w-full px-3 py-2 rounded-md bg-bg border border-line text-ink text-sm" />
+  </div>
+
+  <div class="col-span-2">
+    <label class="block text-xs font-mono text-muted mb-1">Icône (slug Simple Icons, ou 'email' / 'cv')</label>
+    <input name="icon" [(ngModel)]="form.icon" placeholder="github, linkedin, whatsapp, tiktok, email, cv" class="w-full px-3 py-2 rounded-md bg-bg border border-line text-ink text-sm" />
+  </div>
+
+  <label class="col-span-2 flex items-center gap-2 text-sm text-ink">
+    <input type="checkbox" name="isActive" [(ngModel)]="form.isActive" class="accent-accent" />
+    Actif (visible sur le site public)
+  </label>
+
+  <p *ngIf="error" class="col-span-2 text-sm text-red-400">{{ error }}</p>
+
+  <div class="col-span-2 flex gap-2">
+    <button type="submit" [disabled]="saving" class="px-4 py-2 rounded-md bg-accent text-bg text-sm font-medium hover:bg-accent-hover disabled:opacity-50">
+      {{ saving ? 'Enregistrement...' : (editingId ? 'Modifier' : 'Ajouter') }}
+    </button>
+    <button *ngIf="editingId" type="button" (click)="cancel()" class="px-4 py-2 rounded-md border border-line text-ink text-sm">Annuler</button>
+  </div>
+</form>
+
+<table class="w-full text-sm">
+  <thead>
+    <tr class="text-left text-muted border-b border-line">
+      <th class="py-2">Plateforme</th><th>Label</th><th>Lien</th><th>Statut</th><th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let l of links" class="border-b border-line/50">
+      <td class="py-2 text-ink font-mono text-xs">{{ l.platform }}</td>
+      <td class="text-ink">{{ l.label }}</td>
+      <td class="text-muted truncate max-w-[200px]">{{ l.href }}</td>
+      <td>
+        <button
+          (click)="toggleActive(l)"
+          class="px-2 py-1 rounded text-xs font-mono border"
+          [class.text-accent]="l.isActive" [class.border-accent]="l.isActive"
+          [class.text-muted]="!l.isActive" [class.border-line]="!l.isActive"
+        >{{ l.isActive ? 'Actif' : 'Inactif' }}</button>
+      </td>
+      <td class="text-right whitespace-nowrap">
+        <button (click)="edit(l)" class="text-accent hover:underline mr-3">Modifier</button>
+        <button (click)="remove(l.id)" class="text-red-400 hover:underline">Supprimer</button>
+      </td>
+    </tr>
+  </tbody>
+</table>

@@ -9,6 +9,8 @@ import { authGuard } from './core/guards/auth.guard';
 import { ProjectListComponent } from './features/admin/projects/project-list/project-list.component';
 import { ProjectFormComponent } from './features/admin/projects/project-form/project-form.component';
 import { AdminInterestsComponent } from './features/admin/interests/admin-interests.component';
+import { AdminJourneyComponent } from './features/admin/journey/admin-journey.component';
+import { AdminSocialLinksComponent } from './features/admin/social-links/admin-social-links.component';
 
 
 
@@ -34,6 +36,8 @@ export const routes: Routes = [
 { path: 'projects/:id/edit', component: ProjectFormComponent },
 { path: 'skills', component: AdminSkillsComponent },
 { path: 'interests', component: AdminInterestsComponent },
+{ path: 'journey', component: AdminJourneyComponent },
+{ path: 'social-links', component: AdminSocialLinksComponent },
 
       // les autres (projects, journey, interests, social-links, profile) arrivent dans la partie 2
     ],

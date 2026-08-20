@@ -11,6 +11,8 @@ import { ProjectImage } from '../models/project-image.model';
 import { SocialLink } from '../models/social-link.model';
 import { mapProjectFromDb } from './project.mapper';
 import { mapInterestFromDb } from './interest.mapper';
+import { mapExperienceFromDb } from './experience.mapper';
+import { mapSocialLinkFromDb } from './social-link.mapper';
 
 @Injectable({ providedIn: 'root' })
 export class PortfolioService {
@@ -59,14 +61,14 @@ getProjectImages(projectId: number): Observable<ProjectImage[]> {
     }));
   }
 
-  getJourney(): Observable<Experience[]> {
-    return from(
-      supabase.from('journey').select('*').order('sort_order')
-    ).pipe(map(({ data, error }) => {
-      if (error) throw error;
-      return data as Experience[];
-    }));
-  }
+ getJourney(): Observable<Experience[]> {
+  return from(
+    supabase.from('journey').select('*').eq('is_active', true).order('sort_order', { nullsFirst: false })
+  ).pipe(map(({ data, error }) => {
+    if (error) throw error;
+    return (data ?? []).map(mapExperienceFromDb);
+  }));
+}
 
   getInterests(): Observable<Interest[]> {
   return from(
@@ -79,7 +81,9 @@ getProjectImages(projectId: number): Observable<ProjectImage[]> {
 
   getProfile(): Observable<Profile> {
     const profile$ = from(supabase.from('profile').select('*').single());
-    const social$ = from(supabase.from('social_links').select('*').order('sort_order'));
+   const social$ = from(
+  supabase.from('social_links').select('*').eq('is_active', true).order('sort_order', { nullsFirst: false })
+);
 
     return forkJoin([profile$, social$]).pipe(
   map(([{ data: p, error: e1 }, { data: social, error: e2 }]) => {
@@ -95,9 +99,11 @@ getProjectImages(projectId: number): Observable<ProjectImage[]> {
       },
       about: { title: p.about_title, paragraphs: p.about_paragraphs },
       contact: { title: p.contact_title, text: p.contact_text },
-      social: social as any,
+      social: (social ?? []).map(mapSocialLinkFromDb),
     } as Profile;
   })
 );
   }
+
+  
 }

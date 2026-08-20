@@ -1,8 +1,11 @@
+export type ExperienceCategory = 'experience' | 'academic';
+
 export interface Experience {
   id: number;
   title: string;
-  category: 'experience' | 'academic';
   organization?: string;
   period?: string;
   description: string;
+  category: ExperienceCategory;
+  isActive: boolean;
 }
