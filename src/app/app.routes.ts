@@ -11,6 +11,7 @@ import { ProjectFormComponent } from './features/admin/projects/project-form/pro
 import { AdminInterestsComponent } from './features/admin/interests/admin-interests.component';
 import { AdminJourneyComponent } from './features/admin/journey/admin-journey.component';
 import { AdminSocialLinksComponent } from './features/admin/social-links/admin-social-links.component';
+import { AdminProfileComponent } from './features/admin/profile/admin-profile.component';
 
 
 
@@ -38,6 +39,7 @@ export const routes: Routes = [
 { path: 'interests', component: AdminInterestsComponent },
 { path: 'journey', component: AdminJourneyComponent },
 { path: 'social-links', component: AdminSocialLinksComponent },
+{ path: 'profile', component: AdminProfileComponent },
 
       // les autres (projects, journey, interests, social-links, profile) arrivent dans la partie 2
     ],

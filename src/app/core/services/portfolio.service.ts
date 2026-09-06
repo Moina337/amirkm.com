@@ -16,41 +16,41 @@ import { mapSocialLinkFromDb } from './social-link.mapper';
 
 @Injectable({ providedIn: 'root' })
 export class PortfolioService {
-getProjects(): Observable<Project[]> {
-  return from(
-    supabase
-      .from('projects')
-      .select('*, project_images(*)')
-      .eq('is_active', true)
-      .order('sort_order')
-  ).pipe(map(({ data, error }) => {
-    if (error) throw error;
-    return (data ?? []).map(mapProjectFromDb);
-  }));
-}
+  getProjects(): Observable<Project[]> {
+    return from(
+      supabase
+        .from('projects')
+        .select('*, project_images(*)')
+        .eq('is_active', true)
+        .order('sort_order')
+    ).pipe(map(({ data, error }) => {
+      if (error) throw error;
+      return (data ?? []).map(mapProjectFromDb);
+    }));
+  }
 
-getProjectBySlug(slug: string): Observable<Project> {
-  return from(
-    supabase
-      .from('projects')
-      .select('*, project_images(*)')
-      .eq('slug', slug)
-      .eq('is_active', true)
-      .single()
-  ).pipe(map(({ data, error }) => {
-    if (error) throw error;
-    return mapProjectFromDb(data);
-  }));
-}
+  getProjectBySlug(slug: string): Observable<Project> {
+    return from(
+      supabase
+        .from('projects')
+        .select('*, project_images(*)')
+        .eq('slug', slug)
+        .eq('is_active', true)
+        .single()
+    ).pipe(map(({ data, error }) => {
+      if (error) throw error;
+      return mapProjectFromDb(data);
+    }));
+  }
 
-getProjectImages(projectId: number): Observable<ProjectImage[]> {
-  return from(
-    supabase.from('project_images').select('*').eq('project_id', projectId).order('ordre_de_tri')
-  ).pipe(map(({ data, error }) => {
-    if (error) throw error;
-    return data as ProjectImage[];
-  }));
-}
+  getProjectImages(projectId: number): Observable<ProjectImage[]> {
+    return from(
+      supabase.from('project_images').select('*').eq('project_id', projectId).order('ordre_de_tri')
+    ).pipe(map(({ data, error }) => {
+      if (error) throw error;
+      return data as ProjectImage[];
+    }));
+  }
 
   getSkills(): Observable<Skill[]> {
     return from(
@@ -61,49 +61,51 @@ getProjectImages(projectId: number): Observable<ProjectImage[]> {
     }));
   }
 
- getJourney(): Observable<Experience[]> {
-  return from(
-    supabase.from('journey').select('*').eq('is_active', true).order('sort_order', { nullsFirst: false })
-  ).pipe(map(({ data, error }) => {
-    if (error) throw error;
-    return (data ?? []).map(mapExperienceFromDb);
-  }));
-}
-
-  getInterests(): Observable<Interest[]> {
-  return from(
-    supabase.from('interests').select('*').eq('is_active', true).order('sort_order', { nullsFirst: false })
-  ).pipe(map(({ data, error }) => {
-    if (error) throw error;
-    return (data ?? []).map(mapInterestFromDb);
-  }));
-}
-
-  getProfile(): Observable<Profile> {
-    const profile$ = from(supabase.from('profile').select('*').single());
-   const social$ = from(
-  supabase.from('social_links').select('*').eq('is_active', true).order('sort_order', { nullsFirst: false })
-);
-
-    return forkJoin([profile$, social$]).pipe(
-  map(([{ data: p, error: e1 }, { data: social, error: e2 }]) => {
-    if (e1 || e2) throw e1 || e2;
-    return {
-      hero: {
-        name: p.hero_name,
-        role: p.hero_role,
-        tagline: p.hero_tagline,
-        primaryCta: p.hero_primary_cta,
-        secondaryCta: p.hero_secondary_cta,
-        visualImage: p.hero_visual_image,
-      },
-      about: { title: p.about_title, paragraphs: p.about_paragraphs },
-      contact: { title: p.contact_title, text: p.contact_text },
-      social: (social ?? []).map(mapSocialLinkFromDb),
-    } as Profile;
-  })
-);
+  getJourney(): Observable<Experience[]> {
+    return from(
+      supabase.from('journey').select('*').eq('is_active', true).order('sort_order', { nullsFirst: false })
+    ).pipe(map(({ data, error }) => {
+      if (error) throw error;
+      return (data ?? []).map(mapExperienceFromDb);
+    }));
   }
 
-  
+  getInterests(): Observable<Interest[]> {
+    return from(
+      supabase.from('interests').select('*').eq('is_active', true).order('sort_order', { nullsFirst: false })
+    ).pipe(map(({ data, error }) => {
+      if (error) throw error;
+      return (data ?? []).map(mapInterestFromDb);
+    }));
+  }
+
+  getProfile(): Observable<Profile> {
+    const profile$ = from(
+      supabase.from('profile').select('*, profile_images(*)').eq('id', 1).single()
+    );
+    const social$ = from(
+      supabase.from('social_links').select('*').eq('is_active', true).order('sort_order', { nullsFirst: false })
+    );
+
+    return forkJoin([profile$, social$]).pipe(
+      map(([{ data: p, error: e1 }, { data: social, error: e2 }]) => {
+        if (e1 || e2) throw e1 || e2;
+        return {
+          hero: {
+            name: p.hero_name,
+            role: p.hero_role,
+            tagline: p.hero_tagline,
+            primaryCta: p.hero_primary_cta,
+            secondaryCta: p.hero_secondary_cta,
+            visualImage: (p.profile_images ?? []).find((img: any) => img.role === 'hero')?.image ?? '',
+          },
+          about: { title: p.about_title, paragraphs: p.about_paragraphs },
+          contact: { title: p.contact_title, text: p.contact_text },
+          social: (social ?? []).map(mapSocialLinkFromDb),
+        } as Profile;
+      })
+    );
+  }
+
+
 }

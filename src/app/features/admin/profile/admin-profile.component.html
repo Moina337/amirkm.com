@@ -1,0 +1,93 @@
+<h1 class="font-display text-2xl font-semibold text-ink mb-6">Profil</h1>
+
+<div *ngIf="loading" class="text-sm text-muted">Chargement...</div>
+
+<form *ngIf="!loading" (ngSubmit)="save()" class="p-6 bg-surface border border-line rounded-xl shadow-xl max-w-4xl mx-auto text-ink">
+
+  <div class="space-y-6">
+
+    <!-- ===== Hero ===== -->
+    <div>
+      <h2 class="text-xs font-mono uppercase tracking-wider text-accent font-semibold mb-3">Hero</h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-[1fr_1fr_auto] gap-4">
+        <div>
+          <label class="block text-xs font-mono text-muted mb-1.5">Nom</label>
+          <input name="heroName" [(ngModel)]="form.hero.name" class="w-full px-3.5 py-2 rounded-lg bg-bg border border-line text-ink text-sm focus:outline-none focus:border-accent transition-colors" />
+        </div>
+        <div>
+          <label class="block text-xs font-mono text-muted mb-1.5">Rôle</label>
+          <input name="heroRole" [(ngModel)]="form.hero.role" class="w-full px-3.5 py-2 rounded-lg bg-bg border border-line text-ink text-sm focus:outline-none focus:border-accent transition-colors" />
+        </div>
+
+        <div class="row-span-3 flex flex-col">
+          <label class="block text-xs font-mono text-muted mb-1.5">Visuel</label>
+          <div class="w-28 aspect-square rounded-lg overflow-hidden border border-dashed border-line bg-bg flex items-center justify-center mb-2 relative group">
+            <img *ngIf="heroVisualPreview" [src]="heroVisualPreview" alt="" class="w-full h-full object-cover" />
+            <span *ngIf="!heroVisualPreview" class="text-[10px] text-muted font-mono text-center px-2">Aucune image</span>
+            <input type="file" accept="image/*" (change)="onHeroVisualSelected($event)" class="absolute inset-0 opacity-0 cursor-pointer w-full h-full" />
+            <span *ngIf="heroVisualPreview" class="absolute bottom-1 right-1 text-[9px] font-mono bg-bg/80 backdrop-blur-md px-1.5 py-0.5 rounded text-ink border border-line">Changer</span>
+          </div>
+        </div>
+
+        <div class="md:col-span-2">
+          <label class="block text-xs font-mono text-muted mb-1.5">Phrase d'accroche</label>
+          <textarea name="heroTagline" [(ngModel)]="form.hero.tagline" rows="2" class="w-full px-3.5 py-2 rounded-lg bg-bg border border-line text-ink text-sm focus:outline-none focus:border-accent transition-colors resize-none"></textarea>
+        </div>
+
+        <div>
+          <label class="block text-xs font-mono text-muted mb-1.5">Bouton principal</label>
+          <input name="heroPrimaryCta" [(ngModel)]="form.hero.primaryCta" class="w-full px-3.5 py-2 rounded-lg bg-bg border border-line text-ink text-sm focus:outline-none focus:border-accent transition-colors" />
+        </div>
+        <div>
+          <label class="block text-xs font-mono text-muted mb-1.5">Bouton secondaire</label>
+          <input name="heroSecondaryCta" [(ngModel)]="form.hero.secondaryCta" class="w-full px-3.5 py-2 rounded-lg bg-bg border border-line text-ink text-sm focus:outline-none focus:border-accent transition-colors" />
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== À propos ===== -->
+    <div class="pt-4 border-t border-line">
+      <h2 class="text-xs font-mono uppercase tracking-wider text-accent font-semibold mb-3">À propos</h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs font-mono text-muted mb-1.5">Titre</label>
+          <input name="aboutTitle" [(ngModel)]="form.about.title" class="w-full px-3.5 py-2 rounded-lg bg-bg border border-line text-ink text-sm focus:outline-none focus:border-accent transition-colors" />
+        </div>
+        <div class="md:row-span-2">
+          <label class="block text-xs font-mono text-muted mb-1.5">Paragraphes <span class="text-muted font-normal">(ligne vide entre chaque)</span></label>
+          <textarea name="aboutParagraphs" [(ngModel)]="aboutParagraphsInput" rows="6" class="w-full px-3.5 py-2 rounded-lg bg-bg border border-line text-ink text-sm focus:outline-none focus:border-accent transition-colors resize-none"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== Contact ===== -->
+    <div class="pt-4 border-t border-line">
+      <h2 class="text-xs font-mono uppercase tracking-wider text-accent font-semibold mb-3">Contact</h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs font-mono text-muted mb-1.5">Titre</label>
+          <input name="contactTitle" [(ngModel)]="form.contact.title" class="w-full px-3.5 py-2 rounded-lg bg-bg border border-line text-ink text-sm focus:outline-none focus:border-accent transition-colors" />
+        </div>
+        <div>
+          <label class="block text-xs font-mono text-muted mb-1.5">Texte</label>
+          <input name="contactText" [(ngModel)]="form.contact.text" class="w-full px-3.5 py-2 rounded-lg bg-bg border border-line text-ink text-sm focus:outline-none focus:border-accent transition-colors" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Erreurs / succès -->
+    <div *ngIf="error" class="p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm">{{ error }}</div>
+    <div *ngIf="success" class="p-3 rounded-lg bg-accent/10 border border-accent/20 text-accent text-sm">Profil enregistré.</div>
+
+    <!-- Action -->
+    <div class="flex justify-end pt-4 border-t border-line">
+      <button type="submit" [disabled]="saving" class="px-5 py-2.5 rounded-lg bg-accent text-bg text-sm font-semibold hover:opacity-90 disabled:opacity-50 transition-all">
+        {{ saving ? 'Enregistrement...' : 'Enregistrer' }}
+      </button>
+    </div>
+
+  </div>
+</form>
